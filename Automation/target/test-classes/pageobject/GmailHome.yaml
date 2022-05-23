@@ -1,0 +1,3 @@
+create_account: //a[@data-action="create an account"]
+first_name: //input[@name="firstName"]
+last_name: //input[@name="lastName"]

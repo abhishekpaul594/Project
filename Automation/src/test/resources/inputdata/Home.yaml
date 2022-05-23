@@ -1,0 +1,9 @@
+data1:
+  searchbox: test
+  logo: ForceText:click
+  searchbutton: click
+
+data2:
+  searchbox: automation
+  logo: click
+  searchbutton: click

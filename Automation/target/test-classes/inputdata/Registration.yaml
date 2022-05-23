@@ -1,0 +1,26 @@
+data1:
+  first_name: Abhishek
+  last_name: Paul
+  email: abhishekpaul594@gmail.com
+  gender_male: Radio:click
+  mobile_number: '8583883199'
+  date_of_birth: Date:5 January 1996
+  hobbies_sports: click
+  subjects: ForceText:Maths
+  PressKey: Tab
+  current_address: 4/44 Purbapally,Sodepur,Kolkata-700110
+  select_state: ForceSelect:NCR
+  select_city: ForceSelect:Delhi
+data2:
+  first_name: Ricky
+  last_name: Ponting
+  email: ricky.ponting@ca.com
+  gender_male: Radio:click
+  mobile_number: '9876543210'
+  date_of_birth: Date:8 February 1996
+  hobbies_sports: click
+  subjects: ForceText:Computer Science
+  PressKey: Tab
+  current_address: Melbourne,Australia
+  select_state: ForceSelect:Haryana
+  select_city: ForceSelect:Karnal

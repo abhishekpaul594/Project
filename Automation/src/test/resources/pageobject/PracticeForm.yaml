@@ -1,0 +1,10 @@
+first_name: //input[@name="firstname"]
+last_name: //input[@name="lastname"]
+sex_male: //input[@name="sex"]
+year_of_exp_5: //input[@name="exp"][@value="5"]
+date: //td//strong[contains(text(),'Date')]/../following-sibling::td/input
+automation_tester_checkbox: //input[@value="Automation Tester"]
+flavours_of_selenium_webdriver: //input[@value="Selenium Webdriver"]
+continents: //select[@name="continents"]
+selenium_commands: //select[@name="selenium_commands"]
+button_submit: //button[@name="submit"]

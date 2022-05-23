@@ -1,0 +1,6 @@
+first_name: //input[@id="firstName"]
+last_name: //input[@id="lastName"]
+username: //input[@id="username"]
+password: //input[@name="Passwd"]
+confirm: //input[@name="ConfirmPasswd"]
+next: //button//span[text()='Next']

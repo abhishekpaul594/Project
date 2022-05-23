@@ -1,0 +1,5 @@
+from_city: //input[@id="fromCity"]
+to_city: //input[@id="toCity"]
+from_txt: //input[@placeholder="From"]
+select_cty: //li[@id="react-autowhatever-1-section-0-item-0"]
+to_text: //input[@placeholder="To"]

@@ -1,0 +1,11 @@
+data1:
+  first_name: Abhishek
+  last_name: Paul
+  sex_male: Radio:click
+  year_of_exp_5: Radio:click
+  date: 13-05-2022
+  automation_tester_checkbox: click
+  flavours_of_selenium_webdriver: click
+  continents: ::ByText::Australia
+  selenium_commands: ::ByText::Browser Commands
+  button_submit: click
