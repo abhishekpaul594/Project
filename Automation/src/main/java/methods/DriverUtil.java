@@ -10,7 +10,6 @@ import org.openqa.selenium.remote.RemoteWebDriver;
 import org.openqa.selenium.support.ui.ExpectedCondition;
 import org.openqa.selenium.support.ui.WebDriverWait;
 
-import java.io.File;
 import java.time.Duration;
 import java.util.Collections;
 
@@ -43,7 +42,7 @@ public class DriverUtil {
 //                    chromeOptions.addArguments("--disable-gpu");
 //                    chromeOptions.addArguments("--window-size=1920X1080");
 //                }
-                chromeOptions.addExtensions(new File(EXTENSION_PATH));
+//                chromeOptions.addExtensions(new File(EXTENSION_PATH));
                 chromeOptions.addArguments("start-maximized");
                 chromeOptions.setBinary("C:\\Program Files\\Google\\Chrome\\Application\\chrome.exe");
 //                chromeOptions.setExperimentalOption("useAutomationExtension", false);
@@ -51,7 +50,7 @@ public class DriverUtil {
                         Collections.singletonList("enable-automation"));
                 System.setProperty("webdriver.chrome.driver", CHROMEDRIVER_PATH);
                 driver = new ChromeDriver(chromeOptions);
-                driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(3));
+                driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(10));
                 try {
                     driver.switchTo().window("data:,");
                 } catch (Exception e) {
@@ -64,7 +63,7 @@ public class DriverUtil {
 //                    edgeOptions.addArguments("window-size=1920X1080");
 //                }
                 edgeOptions.addArguments("start-maximized");
-                edgeOptions.addExtensions(new File(EXTENSION_PATH));
+//                edgeOptions.addExtensions(new File(EXTENSION_PATH));
                 edgeOptions.setExperimentalOption("useAutomationExtension", false);
                 edgeOptions.setExperimentalOption("excludeSwitches",
                         Collections.singletonList("enable-automation"));

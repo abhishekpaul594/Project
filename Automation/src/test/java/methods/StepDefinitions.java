@@ -5,27 +5,24 @@ import io.cucumber.java.en.Given;
 import io.cucumber.java.en.Then;
 import io.cucumber.java.en.When;
 import org.openqa.selenium.*;
-import methods.ReusableMethods;
-import org.openqa.selenium.devtools.v100.indexeddb.model.Key;
-import org.openqa.selenium.interactions.Action;
 import org.openqa.selenium.interactions.Actions;
-import org.openqa.selenium.support.ui.ExpectedCondition;
-import org.openqa.selenium.support.ui.ExpectedConditions;
-import org.openqa.selenium.support.ui.Select;
-import org.openqa.selenium.support.ui.WebDriverWait;
+import org.openqa.selenium.support.ui.*;
+import org.testng.asserts.SoftAssert;
 
 import java.io.FileNotFoundException;
 import java.time.Duration;
 import java.util.*;
 
 public class StepDefinitions {
-    protected WebDriver driver;
+    protected static WebDriver driver;
     private WebElement elem;
 
     private Map<String, String> storeCapturedValue = new HashMap<>();
     private List<WebElement> elementList = new ArrayList<>();
     private String mainWindow = "";
     ReusableMethods predef = new ReusableMethods();
+
+    SoftAssert anAssert = new SoftAssert();
 
     public StepDefinitions() {
         this.driver = DriverUtil.getDefaultDriver();
@@ -74,17 +71,25 @@ public class StepDefinitions {
     }
 
     @When("^I click on element (.+)$")
-    public void clickElement(String element) {
+    public void clickElement(String element) throws Exception {
         WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(20));
         elem = predef.findElement(element);
         DriverUtil.waitForJqueryJsToLoad();
         wait.until(ExpectedConditions.elementToBeClickable(elem));
-        Actions actions = new Actions(driver);
-        actions.moveToElement(elem).click().perform();
+        elem.click();
         DriverUtil.waitForJqueryJsToLoad();
         predef.waitPageLoad();
     }
 
+    @And("^I wait for ajax call to complete$")
+    public void waitForAjaxCall()
+    {
+        while(true)
+        {
+            if(DriverUtil.waitForJqueryJsToLoad())
+                break;
+        }
+    }
     @When("^I double click on element (.+)$")
     public void doubleClick(String element) {
         try {
@@ -130,7 +135,7 @@ public class StepDefinitions {
     }
 
     @And("^I switch to frame by element (.+)$")
-    public void swithToFrameByElement(String element) {
+    public void swithToFrameByElement(String element) throws Exception {
         elem = predef.findElement(element);
         List<WebElement> frames = driver.findElements(By.xpath("//iframe"));
         driver.switchTo().frame(elem);
@@ -228,7 +233,7 @@ public class StepDefinitions {
     public void forceClick(String element) {
         try {
             elem = predef.findElement(element);
-            ((JavascriptExecutor) driver).executeScript("arguments[0].click", elem);
+            ((JavascriptExecutor) driver).executeScript("arguments[0].click;", elem);
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -288,7 +293,7 @@ public class StepDefinitions {
     }
 
     @When("^I select (.*?) option by (index|value|text) from dropdown (.+)$")
-    public void selectDropdownValue(String option, String optionBy, String element) {
+    public void selectDropdownValue(String option, String optionBy, String element) throws Exception {
         elem = predef.findElement(element);
         if (elem.isEnabled()) {
             Select dropdown = new Select(elem);
@@ -311,7 +316,7 @@ public class StepDefinitions {
             try {
                 actions.moveToElement(elem).click().build().perform();
                 Thread.sleep(1000);
-                elem=driver.findElement(By.xpath("//*[contains(text(),'" + option + "')]"));
+                elem = driver.findElement(By.xpath("//*[contains(text(),'" + option + "')]"));
                 actions.moveToElement(elem).click().build().perform();
             } catch (Exception e) {
                 throw new Exception(option + " option not found");
@@ -322,7 +327,7 @@ public class StepDefinitions {
     }
 
     @When("^I drag (.+) element to (.+)$")
-    public void dragAndDropElement(String element, String dest) {
+    public void dragAndDropElement(String element, String dest) throws Exception {
         elem = predef.findElement(element);
         WebElement to = predef.findElement(dest);
         Actions actions = new Actions(driver);
@@ -333,10 +338,10 @@ public class StepDefinitions {
     public void enterText(String inputString, String element) throws Exception {
         elem = predef.findElement(element);
         if (elem.isEnabled()) {
+            scrollToElement(element);
             elem.sendKeys(inputString);
             DriverUtil.waitForJqueryJsToLoad();
-        }
-        else
+        } else
             throw new Exception("Element " + element + " is not enabled");
     }
 
@@ -401,21 +406,20 @@ public class StepDefinitions {
                     elem.sendKeys(value);
                 }
                 Thread.sleep(1000);
-            }
-            else {
+            } else {
                 pressKeyboardKey(value);
             }
         }
     }
 
     @When("^I select (.+) radio button value$")
-    public void selectRadio(String element) {
+    public void selectRadio(String element) throws Exception {
         elem = predef.findElement(element);
         ((JavascriptExecutor) driver).executeScript("arguments[0].checked=true;", elem);
     }
 
     @When("^I select (.+) date from (.+) datepicker in (.+) page$")
-    public void selectFromDatePicker(String date, String element,String pageName) {
+    public void selectFromDatePicker(String date, String element, String pageName) throws Exception {
         elem = predef.findElement(element);
         String[] dateValue = date.split(" ");
         Actions actions = new Actions(driver);
@@ -433,7 +437,7 @@ public class StepDefinitions {
 
     @When("^I press (.+) key in keyboard$")
     public void pressKeyboardKey(String key) throws Exception {
-        key=key.toUpperCase();
+        key = key.toUpperCase();
         Actions actions = new Actions(driver);
         switch (key) {
             case "ENTER": {
@@ -680,10 +684,28 @@ public class StepDefinitions {
                 actions.sendKeys(Keys.UP).build().perform();
                 break;
             }
-            default:
-            {
-                throw new Exception("\nInvalid key "+key+" tried to press\n");
+            default: {
+                throw new Exception("\nInvalid key " + key + " tried to press\n");
             }
         }
     }
+
+    @Then("^I validate height of (.+) element is (.+)$")
+    public void validateHeight(int expectedHeight, String element) throws Exception {
+        elem = predef.findElement(element);
+        int actualHeight = elem.getRect().height;
+        if (!(actualHeight == expectedHeight)) {
+            throw new Exception("\nExpected Height:" + expectedHeight + "\nActual Height:" + actualHeight + "\n");
+        }
+    }
+
+    @Then("^I validate width of (.+) element is (.+)$")
+    public void validateWidth(int expectedWidth, String element) throws Exception {
+        elem = predef.findElement(element);
+        int actualWidth = elem.getRect().width;
+        if (!(actualWidth == expectedWidth)) {
+            throw new Exception("\nExpected Width:" + expectedWidth + "\nActual Width:" + actualWidth + "\n");
+        }
+    }
+
 }

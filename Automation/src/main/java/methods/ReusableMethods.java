@@ -1,12 +1,10 @@
 package methods;
 
-import methods.DriverUtil;
 import org.openqa.selenium.By;
 import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.ui.WebDriverWait;
-
 import java.time.Duration;
 import java.util.ArrayList;
 import java.util.List;
@@ -14,7 +12,7 @@ import java.util.Map;
 
 public class ReusableMethods {
 
-    protected WebDriver driver;
+    protected static WebDriver driver;
     protected WebElement elem;
 
     protected List<WebElement> elementList=new ArrayList<>();
@@ -31,7 +29,7 @@ public class ReusableMethods {
         }
     }
 
-    public WebElement findElement(String element) {
+    public WebElement findElement(String element) throws Exception {
         String locator="";
         try {
             String[] pageObjectSeperator=element.split("\\.");
@@ -40,7 +38,7 @@ public class ReusableMethods {
             locator=PageObjectGenerator.pageObjects.get(pageName+"."+objectName);
             elem=driver.findElement(By.xpath(locator));
         } catch (Exception e) {
-            System.out.println(element+" element not found");
+            throw new Exception(element+" element not found");
         }
         return elem;
     }
