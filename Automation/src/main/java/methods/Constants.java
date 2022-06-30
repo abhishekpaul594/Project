@@ -6,6 +6,7 @@ public class Constants {
     public static final String BROWSER = "browser";
     public static final String HEADLESS = "headless";
 
+    public static final String SCREENSHOTPATH="src/sreenshots";
     public static final String ENVIRONMENT="src/test/resources/inputdata/environments.yaml";
     public static final String FILE_SEPARATOR = System.getProperty("file.separator");
     public static final String DRIVERPATH = System.getProperty("user.dir") + FILE_SEPARATOR + "webdrivers";

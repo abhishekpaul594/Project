@@ -35,13 +35,13 @@ public class DriverUtil {
         switch (browser.toLowerCase()) {
             case "chrome":
                 ChromeOptions chromeOptions = new ChromeOptions();
-//                if (configProperties.getProperty(HEADLESS).equalsIgnoreCase("true")) {
+                if (configProperties.getProperty(HEADLESS).equalsIgnoreCase("true")) {
 ////                    chromeOptions.addArguments("--headless");
-//                    chromeOptions.addArguments("--headless");
+                    chromeOptions.addArguments("--headless");
 //                    chromeOptions.addArguments("--no-sandbox");
-//                    chromeOptions.addArguments("--disable-gpu");
-//                    chromeOptions.addArguments("--window-size=1920X1080");
-//                }
+//                    chromeOptions.addArguments("disable-gpu");
+//                    chromeOptions.addArguments("window-size=1920X1080");
+                }
 //                chromeOptions.addExtensions(new File(EXTENSION_PATH));
                 chromeOptions.addArguments("start-maximized");
                 chromeOptions.setBinary("C:\\Program Files\\Google\\Chrome\\Application\\chrome.exe");
